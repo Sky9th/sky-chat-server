@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace=绑定一个对应的Dao/Mapper接口-->
+<mapper namespace="com.skychat.server.dao.ChatDao">
+    <!--select查询语句-->
+    <select id="getList" resultType="com.skychat.server.model.Chat">
+        select * from client_chat
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into client_chat (pid,user_id,tag,content,pictures,create_time,update_time,status)
+        values (#{pid},#{user_id},#{tag},#{content},#{pictures},#{create_time},#{update_time},#{status})
+    </insert>
+</mapper>

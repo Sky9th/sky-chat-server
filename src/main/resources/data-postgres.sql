@@ -1,2 +1,0 @@
-INSERT INTO users(id) VALUES(3);
-INSERT INTO users(id) VALUES(4);
