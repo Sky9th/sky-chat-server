@@ -3,13 +3,13 @@ package com.skychat.server.socket;
 import com.skychat.server.ServerApplication;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,13 +17,8 @@ public class Server {
 
     private static final Logger log = LoggerFactory.getLogger(ServerApplication.class);
 
-    @Autowired
-    TcpSocketChannel tcpSocketChannel;
-
-    @Autowired
-    WebSocketChannel webSocketChannel;
-
-    public void start () throws InterruptedException {
+    public void start (ChannelInitializer channel, Integer port) throws InterruptedException {
+        log.info(channel.toString());
         //创建两个线程组 boosGroup、workerGroup
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -39,9 +34,9 @@ public class Server {
                     //设置保持活动连接状态
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
                     //使用匿名内部类的形式初始化通道对象
-                    .childHandler(webSocketChannel);//给workerGroup的EventLoop对应的管道设置处理器
+                    .childHandler(channel);//给workerGroup的EventLoop对应的管道设置处理器
             //绑定端口号，启动服务端
-            ChannelFuture channelFuture = bootstrap.bind(6666).sync();
+            ChannelFuture channelFuture = bootstrap.bind(port).sync();
             //对关闭通道进行监听
             channelFuture.channel().closeFuture().sync();
         } finally {

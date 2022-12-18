@@ -2,6 +2,7 @@ package com.skychat.server.json;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Map;
 @Data
 public class TcpSend {
 
+    public String msg;
     public Map<String, Player> playerList = new HashMap<>();
     public List<Msg> msgList = new ArrayList<>();
 

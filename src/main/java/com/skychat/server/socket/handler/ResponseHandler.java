@@ -1,17 +1,12 @@
-package com.skychat.server.socket;
+package com.skychat.server.socket.handler;
 
-import com.alibaba.fastjson.JSON;
 import com.skychat.server.ServerApplication;
 import com.skychat.server.json.TcpSend;
 import com.skychat.server.service.PlayerStationService;
-import io.netty.buffer.Unpooled;
+import com.skychat.server.socket.Group;
 import io.netty.channel.*;
-import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.ChannelGroupFuture;
 import io.netty.channel.group.ChannelGroupFutureListener;
-import io.netty.channel.group.DefaultChannelGroup;
-import io.netty.util.CharsetUtil;
-import io.netty.util.concurrent.GlobalEventExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +32,7 @@ public class ResponseHandler extends ChannelInboundHandlerAdapter {
         }
         tcpSend.playerList = playerStationService.playerList;
 
-        ChannelGroupFuture future = group.channels.writeAndFlush(Unpooled.copiedBuffer(JSON.toJSONString(tcpSend), CharsetUtil.UTF_8));
+        ChannelGroupFuture future = group.sendAll(tcpSend);
         log.info("Send Client" + tcpSend.toString());
         future.addListener((ChannelGroupFutureListener) channelFutures -> playerStationService.clearMsg());
     }

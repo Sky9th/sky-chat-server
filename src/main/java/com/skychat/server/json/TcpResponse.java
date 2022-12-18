@@ -5,18 +5,18 @@ import com.alibaba.fastjson.JSONObject;
 
 public class TcpResponse {
 
-    public String ID;
-    public String SessionKey;
-    public Msg Msg;
-    public Player PlayerInfo;
-    
+    public String id;
+    public String sessionKey;
+    public Msg msg;
+    public Player playerInfo;
+
     public TcpResponse (String json) {
         JSONObject jsonObject =  JSON.parseObject(json);
 
-        this.ID = jsonObject.getString("ID");
-        this.SessionKey = jsonObject.getString("SessionKey");
-        this.Msg = new Msg(jsonObject.getJSONObject("Msg"));;
-        this.PlayerInfo = new Player(jsonObject.getJSONObject("PlayerInfo"));;
+        this.id = jsonObject.getString("id");
+        this.sessionKey = jsonObject.getString("sessionKey");
+        this.msg = new Msg(jsonObject.getJSONObject("msg"));;
+        this.playerInfo = new Player(jsonObject.getJSONObject("playerInfo"));;
         
     }
 

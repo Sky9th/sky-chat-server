@@ -1,22 +1,18 @@
 package com.skychat.server;
 
-import com.skychat.server.dao.ChatDao;
-import com.skychat.server.model.Chat;
-import com.skychat.server.service.ChatService;
-import com.skychat.server.service.UserService;
+import com.skychat.server.enums.SocketType;
 import com.skychat.server.socket.Server;
-import com.skychat.server.utils.DataSourceConfigUtils;
+import com.skychat.server.socket.tcp.TcpSocketChannel;
+import com.skychat.server.socket.web.WebSocketChannel;
 import com.skychat.server.utils.MybatisUtils;
-import org.apache.ibatis.session.SqlSession;
+import io.netty.channel.ChannelInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-
-import java.util.List;
 
 @SpringBootApplication
 public class ServerApplication {
@@ -27,7 +23,17 @@ public class ServerApplication {
 	Server socket;
 
 	@Autowired
+	TcpSocketChannel tcpSocketChannel;
+
+	@Autowired
+	WebSocketChannel webSocketChannel;
+
+	@Autowired
 	private MybatisUtils mybatisUtils;
+
+	@Value("${spring.socket.channel}")
+	private SocketType channel;
+
 
 	public static void main(String[] args) {
 		log.info("start application");
@@ -52,8 +58,22 @@ public class ServerApplication {
 
 	@Bean
 	public void startSocket () throws InterruptedException {
-		log.info("start socket");
-		socket.start();
+		ChannelInitializer channelInitializer;
+		int port;
+		switch (channel) {
+			case TCPSOCKET:
+				channelInitializer = tcpSocketChannel;
+				port = 6666;
+				break;
+			case WEBSOCKET:
+				channelInitializer = webSocketChannel;
+				port = 6667;
+				break;
+			default:
+				throw new InterruptedException("channel miss");
+		}
+		log.info("start "+ channel +" socket in port:" + port);
+		socket.start(channelInitializer, port);
 	}
 
 }

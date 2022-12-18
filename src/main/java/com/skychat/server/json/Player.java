@@ -1,6 +1,7 @@
 package com.skychat.server.json;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.annotation.JSONField;
 
 public class Player {
 
@@ -12,9 +13,9 @@ public class Player {
     }
 
     public Player (JSONObject jsonObject) {
-        this.mail = jsonObject.getString("Mail");
-        this.positionX = jsonObject.getString("PositionX");
-        this.positionY = jsonObject.getString("PositionY");
+        this.mail = jsonObject.getString("mail");
+        this.positionX = jsonObject.getString("positionX");
+        this.positionY = jsonObject.getString("positionY");
     }
 
 }
