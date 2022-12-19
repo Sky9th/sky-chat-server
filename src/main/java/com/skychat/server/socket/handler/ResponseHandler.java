@@ -1,7 +1,7 @@
 package com.skychat.server.socket.handler;
 
 import com.skychat.server.ServerApplication;
-import com.skychat.server.json.TcpSend;
+import com.skychat.server.json.TcpSendAll;
 import com.skychat.server.service.PlayerStationService;
 import com.skychat.server.socket.Group;
 import io.netty.channel.*;
@@ -26,7 +26,7 @@ public class ResponseHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        TcpSend tcpSend = new TcpSend();
+        TcpSendAll tcpSend = new TcpSendAll();
         if (playerStationService.msgList.size() > 0) {
             tcpSend.msgList = playerStationService.msgList;
         }
