@@ -2,7 +2,8 @@ package com.skychat.server.socket;
 
 import com.skychat.server.ServerApplication;
 import com.skychat.server.json.Player;
-import com.skychat.server.json.TcpSendPer;
+import com.skychat.server.json.send.Active;
+import com.skychat.server.json.send.InActive;
 import com.skychat.server.service.PlayerStationService;
 import io.netty.channel.*;
 import org.slf4j.Logger;
@@ -38,7 +39,7 @@ public class BasicInboundHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         log.info("channelActive");
         group.sendAll("client connected, client count:" + group.channels.size());
-        TcpSendPer send = new TcpSendPer();
+        Active send = new Active();
         send.id = String.valueOf(ctx.channel().id());
         group.sendTo(ctx.channel(), send);
         ctx.fireChannelActive();
@@ -55,6 +56,9 @@ public class BasicInboundHandler extends ChannelInboundHandlerAdapter {
         Channel channel = ctx.channel();
         ChannelId id = channel.id();
         playerStationService.playerList.remove(id.toString());
+        InActive send = new InActive();
+        send.id = id.toString();
+        group.sendAll(send);
         group.channels.remove(channel);
     }
 
