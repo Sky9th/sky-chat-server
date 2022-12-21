@@ -1,8 +1,5 @@
 package com.skychat.server.json.send;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.annotation.JSONField;
 import com.skychat.server.enums.SendType;
 import com.skychat.server.json.Msg;
 import com.skychat.server.json.Player;

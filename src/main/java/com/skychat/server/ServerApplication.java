@@ -17,63 +17,10 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class ServerApplication {
 
-	private static final Logger log = LoggerFactory.getLogger(ServerApplication.class);
-
-	@Autowired
-	Server socket;
-
-	@Autowired
-	TcpSocketChannel tcpSocketChannel;
-
-	@Autowired
-	WebSocketChannel webSocketChannel;
-
-	@Autowired
-	private MybatisUtils mybatisUtils;
-
-	@Value("${spring.socket.channel}")
-	private SocketType channel;
-
 
 	public static void main(String[] args) {
-		log.info("start application");
 		SpringApplication.run(ServerApplication.class, args);
 	}
 
-	/*@Bean
-	public CommandLineRunner demo(UserService userService) {
-		log.info("start runner");
-		return (args) -> {
-			SqlSession session = mybatisUtils.getSqlSession();
-            ChatDao mapper = session.getMapper(ChatDao.class);
-            Chat chat = new Chat(1,0, "test");
-            log.info(chat.toString());
-			Long id = mapper.insert(chat);
-			session.commit();
-			session.close();
-			System.out.println(chat.getId());
-			log.info("end runner");
-		};
-	}*/
-
-	@Bean
-	public void startSocket () throws InterruptedException {
-		ChannelInitializer channelInitializer;
-		int port;
-		switch (channel) {
-			case TCPSOCKET:
-				channelInitializer = tcpSocketChannel;
-				port = 6666;
-				break;
-			case WEBSOCKET:
-				channelInitializer = webSocketChannel;
-				port = 6667;
-				break;
-			default:
-				throw new InterruptedException("channel miss");
-		}
-		log.info("start "+ channel +" socket in port:" + port);
-		socket.start(channelInitializer, port);
-	}
 
 }
