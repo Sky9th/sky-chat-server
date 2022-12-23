@@ -30,7 +30,7 @@ public class BasicInboundHandler extends ChannelInboundHandlerAdapter {
         ChannelId id = channel.id();
         log.info(id.toString());
         log.info(String.valueOf(playerStationService));
-        playerStationService.playerList.put(id.toString(), new Player());
+        playerStationService.waitingPlayerList.put(id.toString(), new Player());
         group.channels.add(channel);
         ctx.fireChannelRegistered();
     }

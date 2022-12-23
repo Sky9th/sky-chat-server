@@ -6,6 +6,7 @@ import com.skychat.server.socket.Group;
 import com.skychat.server.socket.handler.ChatHandler;
 import com.skychat.server.socket.handler.PlayerHandler;
 import com.skychat.server.socket.handler.ResponseHandler;
+import com.skychat.server.socket.runnable.Broadcast;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelInitializer;
@@ -36,11 +37,16 @@ public class TcpSocketChannel extends ChannelInitializer<SocketChannel> {
     @Autowired
     Group group;
 
+    public TcpSocketChannel() {
+    }
+
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         ByteBuf delimiter = Unpooled.copiedBuffer("\r\n".getBytes());
         group.resource = SocketType.TCPSOCKET;
         log.info(String.valueOf(group.resource));
+
+
         socketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, delimiter));
         socketChannel.pipeline().addLast("decoder", new StringDecoder(Charset.forName("UTF-8")));
         socketChannel.pipeline().addLast("encoder", new StringEncoder(Charset.forName("UTF-8")));

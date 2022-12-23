@@ -26,15 +26,6 @@ public class ResponseHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        All tcpSend = new All();
-        if (playerStationService.msgList.size() > 0) {
-            tcpSend.msgList = playerStationService.msgList;
-        }
-        tcpSend.playerList = playerStationService.playerList;
-
-        ChannelGroupFuture future = group.sendAll(tcpSend);
-        log.info("Send Client" + tcpSend.toString());
-        future.addListener((ChannelGroupFutureListener) channelFutures -> playerStationService.clearMsg());
     }
 
     @Override

@@ -29,9 +29,10 @@ public class PlayerHandler extends ChannelInboundHandlerAdapter {
         log.info("player handler channel read");
         //获取客户端发送过来的消息
         String str = String.valueOf(msg);
+        String id = ctx.channel().id().toString();
         TcpResponse tcpResponse = new TcpResponse(str);
-
-        playerStationService.playerList.put(ctx.channel().id().toString(), tcpResponse.playerInfo);
+        playerStationService.waitingPlayerList.remove(id);
+        playerStationService.playerList.put(id, tcpResponse.playerInfo);
         ctx.fireChannelRead(msg);
     }
 

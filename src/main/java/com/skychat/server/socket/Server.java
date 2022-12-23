@@ -1,6 +1,7 @@
 package com.skychat.server.socket;
 
 import com.skychat.server.ServerApplication;
+import com.skychat.server.socket.runnable.Broadcast;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -10,6 +11,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,11 +19,18 @@ public class Server {
 
     private static final Logger log = LoggerFactory.getLogger(ServerApplication.class);
 
+    @Autowired
+    Broadcast broadcast;
+
     public void start (ChannelInitializer channel, Integer port) throws InterruptedException {
         log.info(channel.toString());
+
         //创建两个线程组 boosGroup、workerGroup
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
+
+        workerGroup.execute(broadcast);
+
         try {
             //创建服务端的启动对象，设置参数
             ServerBootstrap bootstrap = new ServerBootstrap();

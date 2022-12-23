@@ -7,10 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Service
@@ -18,15 +15,11 @@ public class PlayerStationService {
 
     private static final Logger log = LoggerFactory.getLogger(ServerApplication.class);
 
+    public Map<String, Player> waitingPlayerList = new HashMap<>();
     public Map<String, Player> playerList = new HashMap<>();
-    public List<Msg> msgList = new ArrayList<>();
+    public Map<String, Queue<Msg>> msgList = new HashMap();
 
     public PlayerStationService () {
         log.info("player station service");
-    }
-
-    public void clearMsg () {
-        msgList = new ArrayList<>();
-        log.info("player station service: clear msg");
     }
 }

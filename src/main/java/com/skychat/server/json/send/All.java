@@ -5,10 +5,7 @@ import com.skychat.server.json.Msg;
 import com.skychat.server.json.Player;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Data
 public class All implements Send {
@@ -16,6 +13,6 @@ public class All implements Send {
     public SendType type = SendType.ALL;
     public String msg;
     public Map<String, Player> playerList = new HashMap<>();
-    public List<Msg> msgList = new ArrayList<>();
+    public Map<String, List<Msg>> msgList = new HashMap<>();
 
 }
